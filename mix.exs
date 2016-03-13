@@ -5,10 +5,13 @@ defmodule Blackjack.Mixfile do
     [app: :blackjack,
      version: "0.0.2",
      elixir: "~> 1.2",
+     name: "blackjack",
+     description: "Blackjack game to help me learn Elixir.",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
-     source_url: "https://github.com/b-boogaard/blackjack",
      docs: [extras: ["README.md"]],
+     package: package,
+     source_url: "https://github.com/b-boogaard/blackjack",
      deps: deps]
   end
 
@@ -33,7 +36,18 @@ defmodule Blackjack.Mixfile do
     [
       {:exrm, "~> 1.0.2"},
       {:ex_doc, "~> 0.11", only: :dev},
-      {:earmark, "~> 0.2.1", only: :dev}
+      {:earmark, "~> 0.1", only: :dev}
+    ]
+  end
+
+  defp package do
+    [
+      maintainers: ["Brian van de Boogaard"],
+      licenses: ["Apache 2.0"],
+      links: %{
+        "Github" => "https://github.com/b-boogaard/blackjack",
+        "License" => "http://www.apache.org/licenses/LICENSE-2.0"
+      }
     ]
   end
 end
