@@ -32,14 +32,6 @@ defmodule Blackjack.Cache do
     GenServer.cast(pid, {:store, state})
   end
 
-  @doc """
-  Replace current state with a new `Blackjack.Game.t`.
-  """
-  @spec clear(pid) :: none
-  def clear(pid) do
-    GenServer.cast(pid, {:clear})
-  end
-
   # Callbacks
 
   ## Calls
@@ -51,11 +43,6 @@ defmodule Blackjack.Cache do
   ## Casts
 
   def handle_cast({:store, new_state}, _state) do
-    {:noreply, new_state}
-  end
-
-  def handle_cast({:clear}, _state) do
-    new_state = %Blackjack.Game{}
     {:noreply, new_state}
   end
 end
