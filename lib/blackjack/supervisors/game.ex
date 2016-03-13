@@ -1,13 +1,13 @@
 defmodule Blackjack.Supervisors.Game do
   use Supervisor
 
-  def start_link() do
-    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(cache) do
+    Supervisor.start_link(__MODULE__, cache)
   end
 
-  def init([]) do
+  def init(cache) do
     children = [
-      worker(Blackjack.Game, [], [id: make_ref])
+      worker(Blackjack.Game, cache, [id: make_ref])
     ]
 
     supervise(children, strategy: :one_for_one)

@@ -1,13 +1,17 @@
 defmodule Blackjack.Game do
+  @moduledoc false
+
+  defstruct players: [], deck: [%Blackjack.Card{}], cache: nil
+
   use GenServer
-  alias Blackjack.{Player, Deck, Game}
+  alias Blackjack.{Player, Deck, Game, Cache}
 
-  defstruct players: [], deck: [%Blackjack.Card{}]
+  @type t :: %Game{players: [pid], deck: [Blackjack.Card.t], cache: pid}
 
-  @type t :: %Game{players: [pid], deck: [Blackjack.Card.t]}
+  ## Api
 
-  def start_link() do
-    GenServer.start_link(__MODULE__, %Game{}, name: __MODULE__)
+  def start_link(cache) do
+    GenServer.start_link(__MODULE__, cache)
   end
 
   def register_player(pid, player) do
@@ -18,25 +22,26 @@ defmodule Blackjack.Game do
     GenServer.cast(pid, {:play})
   end
 
-  def init(_game = %Game{}) do
-    {:ok, %Game{
-        players: [
-          start_player(:one),
-          start_player(:two),
-          start_player(:three),
-          start_player(:four)
-        ],
-      deck: Deck.create_deck |> Deck.shuffle
-    }}
+  def init(cache) do
+    state = %Game{Cache.get(cache) | cache: cache}
+    {:ok, state}
   end
+
+  ## Callbacks
 
   def handle_cast({:play}, game) do
     play_game(game)
   end
 
-  def handle_case({:register_player, player}, game) do
+  def handle_cast({:register_player, player}, game) do
     {:noreply, %Game{game | players: game.players ++ [player]}}
   end
+
+  def terminate(_reason, state) do
+    Cache.store(state.cache, state)
+  end
+
+  ## Private
 
   defp play_game(game) do
     n_game = deal_game(game)
@@ -72,11 +77,6 @@ defmodule Blackjack.Game do
       {:stand} ->
         game
     end
-  end
-
-  defp start_player(name) do
-    {:ok, pid} = Supervisor.start_child(Blackjack.Supervisors.Player, [[name], []])
-    pid
   end
 
   defp deal_game(game) do

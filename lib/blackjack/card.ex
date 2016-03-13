@@ -37,6 +37,6 @@ defmodule Blackjack.Card do
     end
   end
 
-  defp letter_value(value) when value == "ace", do: {1, 10}
+  defp letter_value(value) when value == "ace", do: {1, 11}
   defp letter_value(_value), do: {10, 10}
 end

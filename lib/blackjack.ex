@@ -1,4 +1,6 @@
 defmodule Blackjack do
+  @moduledoc false
+
   use Application
 
   def start(_type, _args) do
@@ -6,7 +8,8 @@ defmodule Blackjack do
 
     children = [
       supervisor(Blackjack.Supervisors.Player, []),
-      supervisor(Blackjack.Supervisors.Game, [])
+      supervisor(Blackjack.Supervisors.TableSup, []),
+      worker(Blackjack.WaitingRoom, [])
     ]
 
     opts = [strategy: :one_for_one, name: __MODULE__]

@@ -1,4 +1,6 @@
 defmodule Blackjack.Player do
+  @moduledoc false
+
   use GenServer
   alias Blackjack.{Player, Hand, AI, Card}
 
