@@ -22,7 +22,7 @@ defmodule Blackjack.Card do
 
   @spec values :: MapSet.t
   def values do
-    MapSet.new(["ace", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"])
+    MapSet.new(["ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"])
   end
 
   @spec suits :: MapSet.t

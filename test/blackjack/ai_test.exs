@@ -2,7 +2,7 @@ defmodule Blackjack.AITest do
   use ExUnit.Case
 
   test "hit when under 17" do
-    for x <- 1..8, y <- 1..8 do
+    for x <- 2..8, y <- 2..8 do
       assert Blackjack.AI.decision(make_hand(x, y)) == {:hit}
     end
   end

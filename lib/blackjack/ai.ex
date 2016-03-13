@@ -3,10 +3,10 @@ defmodule Blackjack.AI do
 
   @spec decision(Hand.t) :: {:hit} | {:stand} | {:split}
   def decision(hand) do
-    case total_hands([hand]) do
-      [{21, _}] -> {:stand}
-      [{_, 21}] -> {:stand}
-      [{x, y}] -> think(x, y)
+    case total_hands(hand) do
+      {21, _} -> {:stand}
+      {_, 21} -> {:stand}
+      {x, y} -> think(x, y)
     end
   end
 
@@ -22,7 +22,7 @@ defmodule Blackjack.AI do
   defp think(x) when x < 17, do: {:hit}
   defp think(_x), do: {:stand}
 
-  defp total_hands(hands) do
-    Enum.map(hands, &Hand.hand_value/1)
+  defp total_hands(hand) do
+    Hand.hand_value(hand)
   end
 end

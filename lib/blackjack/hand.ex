@@ -1,7 +1,7 @@
 defmodule Blackjack.Hand do
   alias Blackjack.{Card, Hand}
 
-  defstruct cards: [%Card{}]
+  defstruct cards: []
 
   @type t :: %Hand{}
 
