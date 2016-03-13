@@ -21,7 +21,9 @@ defmodule Blackjack.Game do
   """
   @spec start_link(pid) :: {:ok, pid}
   def start_link(cache) do
-    GenServer.start_link(__MODULE__, cache)
+    res = {:ok, game} = GenServer.start_link(__MODULE__, cache)
+    Blackjack.Game.play game
+    res
   end
 
   @doc """

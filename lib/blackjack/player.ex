@@ -17,10 +17,14 @@ defmodule Blackjack.Player do
 
   @doc """
   Starts a player process with the provided name and opts.
+
+  Will register itself with the `Blackjack.WaitingRoom` upon initialization.
   """
   @spec start_link(String.t, []) :: {:ok, pid}
   def start_link(name, opts \\ []) do
-    GenServer.start_link(__MODULE__, %Player{name: name}, opts)
+    res = {:ok, pid} = GenServer.start_link(__MODULE__, %Player{name: name}, opts)
+    Blackjack.WaitingRoom.register_player(Blackjack.WaitingRoom, pid)
+    res
   end
 
   @doc """
@@ -29,6 +33,14 @@ defmodule Blackjack.Player do
   @spec make_move(pid) :: {:hit} | {:stand}
   def make_move(pid) do
     GenServer.call(pid, {:make_move})
+  end
+
+  @doc """
+  Returns the score of the provided players hand.
+  """
+  @spec get_score(pid) :: {Integer.t, Integer.t}
+  def get_score(pid) do
+    GenServer.call(pid, {:get_score})
   end
 
   @doc """
@@ -45,6 +57,10 @@ defmodule Blackjack.Player do
 
   def handle_call({:make_move}, _from, player = %Player{}) do
     {:reply, AI.decision(player.hand), player}
+  end
+
+  def handle_call({:get_score}, _from, player = %Player{}) do
+    {:reply, Hand.hand_value(player.hand), player}
   end
 
   ## Casts
