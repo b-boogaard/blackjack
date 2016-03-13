@@ -7,6 +7,8 @@ defmodule Blackjack.Mixfile do
      elixir: "~> 1.2",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
+     source_url: "https://github.com/b-boogaard/blackjack",
+     docs: [extras: ["README.md"]],
      deps: deps]
   end
 
@@ -28,6 +30,10 @@ defmodule Blackjack.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:exrm, "~> 1.0.2"},
+      {:ex_doc, "~> 0.11", only: :dev},
+      {:earmark, "~> 0.2.1", only: :dev}
+    ]
   end
 end
